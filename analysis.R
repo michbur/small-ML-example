@@ -1,10 +1,11 @@
 library(dplyr)
 library(ranger)
 library(hmeasure)
+library(kernlab)
 
 set.seed(151390)
 
-n_randoms <- 10
+n_randoms <- 20
 holdout_perc <- 0.2
 
 df <- data.frame(y = factor(c(rep("banana", 150), rep("piolin", 150))))
@@ -24,12 +25,10 @@ test_ids <- unlist(lapply(levels(df[["y"]]), function(ith_group) {
 train_dat <- full_dat[-test_ids, ]
 test_dat <- full_dat[test_ids, ]
 
-model <- ranger(y ~ ., data = train_dat)
+model_rf <- ranger(y ~ ., data = train_dat)
+model_svm <- ksvm(y ~ ., data = train_dat)
 
-HMeasure(test_dat[["y"]], data.frame(ranger = predict(model, test_dat)[["predictions"]]))
+res <- HMeasure(test_dat[["y"]], 
+                data.frame(ranger = predict(model_rf, test_dat)[["predictions"]],
+                           svm = predict(model_svm, test_dat)))[["metrics"]]
 
-
-
-
-
-           
