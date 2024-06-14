@@ -18,6 +18,11 @@ seqs <- c(lapply(1L:50, function(ith_seq)
 kmers <- count_ngrams(seqs, 3, c("A", "B", "C", "D"), pos = FALSE) %>% 
   binarize()
 
+# Warning message:
+#   In count_ngrams(splitted_sequences, 3, c("A", "R", "N", "D", "C",  :
+#                                              'seq' contains following unigrams not present in 'u' parameter:
+#                                              NA
+
 full_dat <- data.frame(y = factor(c(rep("banana", 50), rep("piolin", 50))),
                        as.matrix(kmers))
 
@@ -34,3 +39,4 @@ model_rf <- ranger(y ~ ., data = train_dat, importance = "impurity")
 res <- HMeasure(test_dat[["y"]], data.frame(ranger = predict(model_rf, test_dat)[["predictions"]]))[["metrics"]]
 
 sort(importance(model_rf), decreasing = TRUE)
+
