@@ -54,10 +54,11 @@ splitted_sequences <- lapply(training_seqs$Full.seq, split_sequence) %>%
 # 
 # u_seq <- unique(as.vector(transposed_training_seqs ))
 
-kmers_seq <- count_ngrams(splitted_sequences , 3, c("A", "R", "N", "D", "C", "Q", "E", "G", "H",
+kmers_seq <- count_ngrams(splitted_sequences, 2, c("A", "R", "N", "D", "C", "Q", "E", "G", "H",
                                  "I", "L", "K", "M", "F", "P", "S", "T", "W", 
                                  "Y", "V"), pos = FALSE) %>% 
   binarize()
+
 
 
 
